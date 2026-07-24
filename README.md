@@ -7,7 +7,7 @@ The method uses the pretrained [`google/ddpm-celebahq-256`](https://huggingface.
 The code supports two stages:
 
 1. Generate samples from fixed seeds and save their reverse diffusion trajectories.
-2. Select a recipient image and a donor image, blend a masked donor region into the recipient at different reverse-process positions, and continue denoising to obtain edited samples.
+2. Select a recipient image and a donor image, blend a masked donor region into the recipient at different reverse-process steps, and continue denoising to obtain edited samples.
 
 This project is a compact demonstration of the experiments developed for the diploma thesis **Data Mining from Digital Images Using Diffusion Models**.
 
@@ -56,10 +56,10 @@ The diagram shows the complete workflow: sample two images, recover matching int
 
 Each result grid varies two parameters:
 
-- **Rows:** blending strength \(\alpha\), from `0.1` to `0.9`, followed by hard replacement.
-- **Columns:** the reverse-process position at which the masked intervention is applied.
+- **Rows:** blending strength \($\alpha), from `0.1` to `0.9`, followed by hard replacement.
+- **Columns:** the reverse-process step at which the masked intervention is applied.
 
-Low \(\alpha\) values preserve more of the recipient state, while high values transfer more donor information. The intervention position controls whether the edit affects global structure, identity, or localized visual detail.
+Low \($\alpha) values preserve more of the recipient state, while high values transfer more donor information. The intervention position controls whether the edit affects global structure, identity, or localized visual detail.
 
 ### Example 1
 
@@ -81,8 +81,8 @@ Low \(\alpha\) values preserve more of the recipient state, while high values tr
 
 The examples illustrate the central trade-off:
 
-- interventions at some positions can strongly alter the generated identity or global facial structure;
-- interventions at suitable intermediate positions can transfer the selected attribute while preserving more of the recipient;
+- interventions at early steps can strongly alter the generated identity or global facial structure;
+- interventions at suitable intermediate steps can transfer the selected attribute while preserving more of the recipient;
 - interventions very late in the reverse process may not integrate the donor region naturally;
 - increasing \(\alpha\) generally strengthens the transferred attribute.
 
@@ -102,10 +102,10 @@ The examples illustrate the central trade-off:
 │   ├── results_example_1.png
 │   ├── results_example_2.png
 │   └── results_example_3.png
-├── samples/                  # generated locally;
+├── samples/                  # generated locally
 │   ├── <recipient_seed>/
 │   └── <donor_seed>/
-└── experiments/              # generated locally;
+└── experiments/              # generated locally
 ```
 
 
@@ -186,7 +186,7 @@ To save the complete trajectory, use:
 --save_every 1
 ```
 
-`experiments.py` must load only positions that were actually saved.
+`experiments.py` must load only timesteps that were actually saved.
 
 Examples:
 
@@ -200,7 +200,6 @@ for start_timestep_index in range(0, 1000, 40):
     ...
 ```
 
-Do not request `x_t_tensor_0100.pt` after using `--save_every 40`, because position `100` was not saved.
 
 ---
 
@@ -214,7 +213,7 @@ masks/
 └── mask_mouth.png
 ```
 
-Choose the mask by changing `mask_path` near the beginning of `experiments.py`:
+Choose the mask of those by changing `mask_path` near the beginning of `experiments.py` or create your own mask. The mask could be on anything you want to edit, items, facial expressions, background etc..
 
 ---
 
@@ -234,7 +233,7 @@ mask_path = "masks/mask_eyes.png"
 
 The selected seed folders must already exist under `samples/`.
 
-Change the `range(...)` expression in `experiments.py` to use a different interval. The requested positions must exist in both the recipient and donor trajectory folders.
+Change the `range(...)` expression in `experiments.py` to use a different interval. The requested timesteps must exist in both the recipient and donor trajectory folders.
 
 ```python
 for start_timestep_index in range(100, 900, 20):
@@ -321,10 +320,11 @@ Evaluation scripts and complete quantitative results are not required to run the
 ## Citation
 
 ```bibtex
-@misc{papaefthymiou2026trajectory,
-  author = {Vasileios Papaefthymiou},
+@mastersthesis{papaefthymiou2026trajectory,
+  author = {Papaefthymiou, Vasileios},
   title = {Data Mining from Digital Images Using Diffusion Models},
+  school = {University of Patras},
   year = {2026},
-  note = {Diploma Thesis, University of Patras}
+  type = {Diploma Thesis}
 }
 ```
