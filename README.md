@@ -300,15 +300,6 @@ Evaluation scripts and complete quantitative results are not required to run the
 
 ---
 
-## Limitations
-
-- The method depends strongly on the intervention position.
-- Early or aggressive interventions may alter global structure and identity.
-- Late interventions may appear pasted or may fail to integrate naturally.
-- Full DDPM sampling requires many U-Net evaluations and is computationally expensive.
-
----
-
 ## Model and Framework
 
 - Pretrained model: [`google/ddpm-celebahq-256`](https://huggingface.co/google/ddpm-celebahq-256)
