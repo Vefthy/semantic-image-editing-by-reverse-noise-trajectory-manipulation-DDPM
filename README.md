@@ -2,7 +2,7 @@
 
 This repository demonstrates localized semantic image editing in an unconditional Denoising Diffusion Probabilistic Model (DDPM) by directly manipulating intermediate states of the reverse diffusion trajectory.
 
-The method uses the pretrained [`google/ddpm-celebahq-256`](https://huggingface.co/google/ddpm-celebahq-256) model. It does not require additional training, fine-tuning, classifier guidance, or architectural changes.
+The method uses the pretrained [`google/ddpm-celebahq-256`](https://huggingface.co/google/ddpm-celebahq-256) model.
 
 The code supports two stages:
 
@@ -17,10 +17,10 @@ This project is a compact demonstration of the experiments developed for the dip
 
 Let:
 
-- \(x_t^{(A)}\) be the donor state at reverse-process position \(t\),
-- \(x_t^{(B)}\) be the recipient state at the same position,
-- \(M\) be a binary spatial mask,
-- \(\alpha \in (0,1]\) be the donor blending strength.
+- $x_t^{(A)}$ is the donor state at reverse-process position $t$,
+- $x_t^{(B)}$ is the recipient state at the same position,
+- $M$ is a binary spatial mask,
+- $\alpha \in (0,1]$ is the donor blending strength.
 
 The edited intermediate state is:
 
@@ -36,11 +36,11 @@ M\odot
 \right).
 $$
 
-The reverse diffusion process then continues from \(\tilde{x}_t\) until the final sample \(\tilde{x}_0\) is produced.
+The reverse diffusion process then continues from $\tilde{x}_t$ until the final sample $\tilde{x}_0$ is produced.
 
 - Outside the mask, the recipient state is unchanged.
 - Inside the mask, the donor and recipient states are linearly blended.
-- \(\alpha=1\) corresponds to hard replacement inside the mask.
+- $\alpha = 1$ corresponds to hard replacement inside the mask.
 
 <p align="center">
   <img src="assets/method_overview.png" alt="Overview of masked reverse trajectory manipulation" width="520">
